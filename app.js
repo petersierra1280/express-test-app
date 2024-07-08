@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -8,6 +9,15 @@ app.use(bodyParser.json());
 
 let patients = [];
 let currentId = 1;
+
+// Middleware to validating API key before an operation
+const apiKeyMiddleware = (req, res, next) => {
+    const apiKey = req.headers['x-api-key'];
+    if (apiKey !== process.env.API_KEY) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    next();
+}
 
 // Retrieve all patients
 app.get('/patients', (req, res, next) => {
@@ -90,7 +100,7 @@ app.put('/patients/:id', (req, res, next) => {
 });
 
 // Delete a patient by ID
-app.delete('/patients/:id', (req, res, next) => {
+app.delete('/patients/:id', apiKeyMiddleware, (req, res, next) => {
     try {
         const patientId = parseInt(req.params.id, 10);
         const patientIndex = patients.findIndex(p => p.id === patientId);
