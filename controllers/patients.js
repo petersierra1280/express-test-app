@@ -19,11 +19,11 @@ router.get('/:id', (req, res, next) => {
     try {
         const patientId = parseInt(req.params.id, 10);
         if (!patientId) {
-            return res.status(400).send('Missing ID param');
+            return res.status(400).send({ error: 'Missing ID param' });
         }
         const patient = patients.find(p => p.id === patientId);
         if (!patient) {
-            return res.status(404).send('Patient not found');
+            return res.status(404).send({ error: 'Patient not found' });
         }
         res.json(patient);
     } catch (error) {
@@ -37,21 +37,21 @@ router.post('/', (req, res, next) => {
         const { name, age, diagnosis } = req.body;
 
         if (!name) {
-            return res.status(400).send('Missing name param');
+            return res.status(400).send({ error: 'Missing name param' });
         }
 
         if (!age) {
-            return res.status(400).send('Missing age param');
+            return res.status(400).send({ error: 'Missing age param' });
         }
 
         if (!diagnosis) {
-            return res.status(400).send('Missing diagnosis param');
+            return res.status(400).send({ error: 'Missing diagnosis param' });
         }
 
         const existingPatient = patients.find(p => p.name === name);
 
         if (existingPatient) {
-            return res.status(400).send('This patient\'s already a registered');
+            return res.status(400).send({ error: 'This patient\'s already a registered' });
         }
 
         const newPatient = {
@@ -73,7 +73,7 @@ router.put('/:id', (req, res, next) => {
         const patientId = parseInt(req.params.id, 10);
         const patient = patients.find(p => p.id === patientId);
         if (!patient) {
-            return res.status(404).send('Patient not found');
+            return res.status(404).send({ error: 'Patient not found' });
         }
         const { name, age, diagnosis } = req.body;
         patient.name = name || patient.name;
@@ -91,7 +91,7 @@ router.delete('/:id', apiKeyMiddleware, (req, res, next) => {
         const patientId = parseInt(req.params.id, 10);
         const patientIndex = patients.findIndex(p => p.id === patientId);
         if (patientIndex === -1) {
-            return res.status(404).send('Patient not found');
+            return res.status(404).send({ error: 'Patient not found' });
         }
         patients.splice(patientIndex, 1);
         res.status(204).send();
