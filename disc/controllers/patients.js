@@ -97,4 +97,4 @@ router.delete('/:id', apiKeyValidation_1.default, (req, res, next) => {
         next(error);
     }
 });
-module.exports = router;
+exports.default = router;

@@ -2,6 +2,7 @@ require('dotenv').config({ path: `./src/.env` });
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import './mongoSetup';
 
 import patientsController from './controllers/patients';
 import errorMiddleware from './middlewares/errorMiddleware';
