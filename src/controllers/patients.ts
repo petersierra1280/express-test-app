@@ -1,9 +1,16 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const apiKeyMiddleware = require('../middlewares/apiKeyValidation');
+import apiKeyMiddleware from '../middlewares/apiKeyValidation';
 
-let patients = [];
-let currentId = 1;
+let patients: Patient[] = [];
+let currentId: number = 1;
+
+interface Patient {
+    id: number;
+    name: string;
+    age: number;
+    diagnosis: string;
+}
 
 // Retrieve all patients
 router.get('/', (req, res, next) => {
@@ -78,7 +85,7 @@ router.put('/:id', (req, res, next) => {
         const { name, age, diagnosis } = req.body;
         patient.name = name || patient.name;
         patient.age = age || patient.age;
-        patient.diagnosis = diagnosis || patient.condition;
+        patient.diagnosis = diagnosis || patient.diagnosis;
         res.json(patient);
     } catch (error) {
         next(error);
@@ -100,4 +107,4 @@ router.delete('/:id', apiKeyMiddleware, (req, res, next) => {
     }
 });
 
-module.exports = router;
+export default router;
