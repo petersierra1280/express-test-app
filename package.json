@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "app.ts",
   "scripts": {
+    "start": "node ./disc/app.js",
     "build": "tsc",
     "dev": "ts-node-dev ./src/app.ts",
     "test": "jest"
